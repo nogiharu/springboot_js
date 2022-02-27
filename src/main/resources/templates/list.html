@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <title>Insert title here</title>
+</head>
+
+<body class="bg-light">
+
+    <div class="container w-75">
+        <h1 class="text-center text-info my-4">TODO</h1>
+        <form id="form" class="mb-4">
+            <input type="text" id="input" class="form-control" placeholder="TODOを入力" autocomplete="off">
+        </form>
+        <ul class="list-group text-secondary" id="ul"></ul>
+
+        <!--【パート２】 JS値渡し、ラジオボタン画面切り替え -->
+        <table class="table table-bordered">
+            <tr>
+                <th>ID</th>
+                <th>名前</th>
+                <th>年齢</th>
+                <th>ラジオ</th>
+            </tr>
+            <tr th:each="js : ${jsList}">
+                <td>
+                    <button th:onclick="|js('__${js.name}__','__${js.age}__')|" class="btn btn-primary" type="button"
+                        th:text="${js.id}">ID</button>
+                </td>
+                <td th:text="${js.name}"></td>
+                <td th:text="${js.age}"></td>
+                <td>
+                    <input type="radio" value="/js" onclick="location.href=this.value">ダミー
+                    <input type="radio" value="0" th:name="${js.url}" onclick="location.href='/'">/
+                    <input type="radio" th:value="${js.url}" th:onclick="location.href='js'">js
+                </td>
+            </tr>
+        </table>
+        <!--【パート２】JS値渡し、ラジオボタン画面切り替え -->
+        <table th:object="${jsUser}">
+            <tr>
+                <th>ID</th>
+                <th>名前</th>
+                <th>年齢</th>
+                <th>ラジオ</th>
+            </tr>
+            <tr>
+                <td>
+                    <button th:onclick="|js('__*{name}__','__*{age}__')|" class="btn btn-primary" type="button"
+                        th:text="*{id}">ID</button>
+                </td>
+                <td th:text="*{name}"></td>
+                <td th:text="*{age}"></td>
+                <td>
+                    <input type="radio" value="0" th:field="*{url}" th:onclick="location.href='/'">/
+                    <input type="radio" value="1" th:field="*{url}" th:onclick="location.href='js'">js
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <script th:src="@{/js/list.js}"></script>
+</body>
+
+</html>
